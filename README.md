@@ -27,7 +27,7 @@ Para esta tarea, tienes como tarea el desarrollar y probar un algoritmo de
 *bosques aleatorios* basado en los algortimos ya presentados,
 para esto hay que hacer lo siguiente:
 
-1. En el archivo `arboles_numericos.py` se encuentra la difuiente función:
+1. En el archivo `arboles_numericos.py` se encuentra la siguiente función:
    
    ```python
     def entrena_arbol(datos, target, clase_default, 
