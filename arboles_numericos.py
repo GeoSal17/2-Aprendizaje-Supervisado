@@ -50,7 +50,8 @@ def entrena_arbol(datos, target, clase_default,
     atributos.remove(target)
         
     if isinstance(variables_seleccionadas, int) and variables_seleccionadas > 0:
-        atributos = random.sample(atributos, variables_seleccionadas)
+        if atributos > variables_seleccionadas:
+            atributos = random.sample(atributos, variables_seleccionadas)
 
     # Criterios para deterinar si es un nodo hoja
     if  len(datos) == 0 or len(atributos) == 0:

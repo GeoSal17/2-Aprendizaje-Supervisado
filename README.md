@@ -43,7 +43,7 @@ para esto hay que hacer lo siguiente:
    para seleccionar el par `(atributo, valor)` en ese nodo (solo en ese nodo). Recuerda que 
    a los hijos se les envía todos los atributos en forma recursiva.
 
-2. En el archivo `bosque_aleatorio.py` desarrolla una función para entrenar busques 
+2. En el archivo `bosque_aleatorio.py` desarrolla una función para entrenar bosques 
    aleatorios, basándose en el uso de la función `entrena_arbol` del modulo 
    `arboles_numericos.py`. El algoritmo deberá:
 
