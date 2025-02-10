@@ -8,10 +8,12 @@ import bosque_aleatorio as ba
 import os
 import random
 
+# Función para calcular la exactitud del árbol según las configuraciones dadas.
 def calcular_accuracy(validacion, prediccion):
     aciertos = sum(1 for real, pred in zip(validacion, prediccion) if real == pred)
     return aciertos / len(validacion)
 
+# Manejo de las datasets (yo puse 2 ejemplos, solo es necesario cambiar los comentarios de prueba_BA.py)
 url = 'https://archive.ics.uci.edu/static/public/53/iris.zip'
 archivo = 'datos/iris.zip'
 archivo_datos = 'datos/iris.data'
@@ -24,6 +26,7 @@ archivo_datos = 'datos/transfusion.data'
 atributos = ['Recency', 'Frequency', 'Monetary', 'Time', 'Donated_Blood']
 target = 'Donated_Blood'
 """
+
 if not os.path.exists('datos'):
     os.makedirs('datos')
 if not os.path.exists(archivo):
