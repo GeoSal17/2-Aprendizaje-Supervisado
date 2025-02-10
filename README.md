@@ -56,7 +56,7 @@ para esto hay que hacer lo siguiente:
     Puedes usar varias funciones, que separen un problema grande en varios más pequeños y tratables.
 
 3. En el archivo `prueba_BA.py` usa un conjunto de datos **diferente** a los que ya 
-   usamos para árboles cualitativos y numérico del 
+   usamos para árboles cualitativos y numéricos del 
    [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/datasets/). 
    Muestra que pasa conforme se aumenta el número de árboles en tu bosque, la máxima
    profundidad de los árboles, o la cantidad de variables a considerar en cada nodo.

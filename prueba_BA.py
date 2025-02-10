@@ -17,7 +17,13 @@ archivo = 'datos/iris.zip'
 archivo_datos = 'datos/iris.data'
 atributos = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'class']
 target = 'class'
-
+"""
+url = 'https://archive.ics.uci.edu/static/public/176/blood+transfusion+service+center.zip'
+archivo = 'datos/transfusion.zip'
+archivo_datos = 'datos/transfusion.data'
+atributos = ['Recency', 'Frequency', 'Monetary', 'Time', 'Donated_Blood']
+target = 'Donated_Blood'
+"""
 if not os.path.exists('datos'):
     os.makedirs('datos')
 if not os.path.exists(archivo):
@@ -28,10 +34,11 @@ datos_espacios = ut.lee_csv(archivo_datos, atributos=atributos, separador=',')
 datos = [fila for fila in datos_espacios if all(fila[k] != '' for k in atributos[:-1])]
 
 datos_transformados = [{k: float(fila[k]) for k in atributos[:-1]} | {"class": fila["class"]} for fila in datos]
+#datos_transformados = [{k: float(fila[k]) for k in atributos[:-1]} | {"Donated_Blood": fila["Donated_Blood"]} for fila in datos]
 
 # Test para ver que pasa cuando se aumenta el número de árboles, la máxima profundidad o la cantidad de variables
-max_arboles = [10, 50, 200] 
-max_profundidad = [None, 5, 15] 
+max_arboles = [10, 50, 100] 
+max_profundidad = [None, 10, 20] 
 num_variables = [1, 2, 3, 4] 
 
 random.seed(42)
@@ -41,6 +48,7 @@ datos_entrenamiento = datos_transformados[:N]
 datos_validacion = datos_transformados[N:]
 
 clase_default = 'Iris-versicolor'
+#clase_default = '1'
 
 for M in max_arboles:
     for max_prof in max_profundidad:
@@ -58,7 +66,6 @@ for M in max_arboles:
 
             predicciones = [ba.predice_bosque(bosque, instancia) for instancia in datos_validacion]
             
-            # Evalía precisión
             valida_real = [fila[target] for fila in datos_validacion]
             precision = calcular_accuracy(valida_real, predicciones)
 
