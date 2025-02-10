@@ -52,12 +52,16 @@ def lee_csv(archivo, atributos=None, separador=','):
         Separador de columnas.
     """
     with open(archivo, 'r') as f:
-        lineas = f.readlines()
+        lineas = [l.strip() for l in f.readlines() if l.strip()]
     if atributos is None:   
         columnas = lineas[0].strip().split(separador)
     else:
         columnas = atributos
+        datos_crudos = lineas
     datos = []
-    for l in lineas[1:]:
-        datos.append({c: v for c, v in zip(columnas, l.strip().split(','))})
+    for l in datos_crudos:
+        valores = [v.strip() for v in l.split(separador)]
+
+        if len(valores) == len(columnas) and any(valores):
+            datos.append({c: v for c, v in zip(columnas, valores)})
     return datos

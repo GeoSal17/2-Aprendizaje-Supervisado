@@ -46,18 +46,26 @@ def entrena_arbol(datos, target, clase_default,
         El nodo raíz del árbol de desición
     
     """
+
+    if not datos:
+        raise ValueError("⚠️ Error: No se pueden entrenar árboles con una lista de datos vacía.")
+    
+    atributos = [k for k in datos[0].keys() if k != target]
+
     atributos = list(datos[0].keys())
-    atributos.remove(target)
+    #atributos.remove(target)
+    atributos = [k for k in datos[0].keys() if k != target]
         
     if isinstance(variables_seleccionadas, int) and variables_seleccionadas > 0:
-        if atributos > variables_seleccionadas:
+        if len(atributos) > variables_seleccionadas:
             atributos = random.sample(atributos, variables_seleccionadas)
 
     # Criterios para deterinar si es un nodo hoja
     if  len(datos) == 0 or len(atributos) == 0:
         return NodoN(terminal=True, clase_default=clase_default)
-    
-    clases = Counter(d[target] for d in datos)
+
+    #clases = Counter(d[target] for d in datos)
+    clases = Counter(d[target][0] if isinstance(d[target], list) and d[target] else d[target] for d in datos)
     clase_default = clases.most_common(1)[0][0]
     
     if (max_profundidad == 0 or 
@@ -69,12 +77,20 @@ def entrena_arbol(datos, target, clase_default,
     variable, valor = selecciona_variable_valor(
         datos, target, atributos
     )
+
+    menores = [d for d in datos if d[variable] < valor]
+    mayores = [d for d in datos if d[variable] >= valor]
+
+    if len(menores) == 0 or len(mayores) == 0:
+        return NodoN(terminal=True, clase_default=clase_default)
+
     nodo = NodoN(
         terminal=False, 
         clase_default=clase_default,
         atributo=variable, 
         valor=valor 
     )
+
     nodo.hijo_menor = entrena_arbol(
         [d for d in datos if d[variable] < valor],
         target,
@@ -82,6 +98,7 @@ def entrena_arbol(datos, target, clase_default,
         max_profundidad - 1 if max_profundidad is not None else None,
         acc_nodo, min_ejemplos, variables_seleccionadas
     )   
+
     nodo.hijo_mayor = entrena_arbol(
         [d for d in datos if d[variable] >= valor],
         target,
@@ -89,6 +106,7 @@ def entrena_arbol(datos, target, clase_default,
         max_profundidad - 1 if max_profundidad is not None else None,
         acc_nodo, min_ejemplos, variables_seleccionadas
     )   
+
     return nodo
 
 def selecciona_variable_valor(datos, target, atributos):
@@ -167,13 +185,14 @@ def maxima_ganancia_informacion(datos, target, atributo, entropia):
         La ganancia de información del atributo dividiendo en ese valor
     
     """
-    
+
     lista_valores = [(d[atributo], d[target]) for d in datos]
     lista_valores.sort(key=lambda x: x[0])
     lista_valor_ganancia = []
     for (v1, v2) in zip(lista_valores[:-1], lista_valores[1:]):
         if v1[1] != v2[1]:
-            valor = (v1[0] + v2[0]) / 2
+            #valor = (v1[0] + v2[0]) / 2
+            valor = (float(v1[0]) + float(v2[0])) / 2
             ganancia = ganancia_informacion(datos, target, atributo, valor, entropia)
             lista_valor_ganancia.append((valor, ganancia))
     return max(lista_valor_ganancia, key=lambda x: x[1])
@@ -202,8 +221,9 @@ def ganancia_informacion(datos, target, atributo, valor, entropia):
         La ganancia de información del atributo dividiendo en ese valor
     """
     
-    datos_menor = [d for d in datos if d[atributo] < valor]
-    datos_mayor = [d for d in datos if d[atributo] >= valor]
+    datos_menor = [d for d in datos if float(d[atributo]) < valor]
+    #datos_menor = [d for d in datos if d[atributo] < valor]
+    datos_mayor = [d for d in datos if float(d[atributo]) >= valor]
     
     entropia_menor = entropia_clase(datos_menor, target)
     entropia_mayor = entropia_clase(datos_mayor, target)
