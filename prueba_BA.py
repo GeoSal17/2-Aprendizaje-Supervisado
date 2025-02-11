@@ -80,7 +80,7 @@ for M in max_arboles:
             #print(f"Precisión: {precision:.4f}")
             print(
                 f'{M}'.center(10) 
-                + f'{str(max_prof) if max_prof is not None else "∞"}'.center(15) 
+                + f'{str(max_prof) if max_prof is not None else "None"}'.center(15) 
                 + f'{num_vars}'.center(15) 
                 + f'{precision:.4f}'.center(15)
             )
