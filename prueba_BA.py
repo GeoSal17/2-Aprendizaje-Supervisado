@@ -53,10 +53,14 @@ datos_validacion = datos_transformados[N:]
 clase_default = 'Iris-versicolor'
 #clase_default = '1'
 
+resultados = []
+print('Árboles'.center(10) + 'Profundidad'.center(15) + 'Variables'.center(15) + 'Accuracy'.center(15))
+print('-' * 55)
+
 for M in max_arboles:
     for max_prof in max_profundidad:
         for num_vars in num_variables:
-            print(f"Evaluando configuración: Árboles={M}, Profundidad={max_prof}, Variables por nodo={num_vars}")
+            #print(f"Evaluando configuración: Árboles={M}, Profundidad={max_prof}, Variables por nodo={num_vars}")
             
             bosque = ba.entrena_bosque(
                 datos = datos_entrenamiento,  
@@ -71,5 +75,18 @@ for M in max_arboles:
             
             valida_real = [fila[target] for fila in datos_validacion]
             precision = calcular_accuracy(valida_real, predicciones)
+            resultados.append((M, max_prof, num_vars, precision))
 
-            print(f"Precisión: {precision:.4f}")
+            #print(f"Precisión: {precision:.4f}")
+            print(
+                f'{M}'.center(10) 
+                + f'{str(max_prof) if max_prof is not None else "∞"}'.center(15) 
+                + f'{num_vars}'.center(15) 
+                + f'{precision:.4f}'.center(15)
+            )
+
+print('-' * 55 + '\n')
+mejor_config = max(resultados, key=lambda x: x[3])
+print(f"La configuración con mayor precisión es:")
+print(f"Árboles: {mejor_config[0]}, Profundidad: {mejor_config[1]}, Variables: {mejor_config[2]}, Precisión: {mejor_config[3]:.4f}" + '\n')
+print('-' * 55 + '\n')
